@@ -6,6 +6,16 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <form action="" method="post">
+        {% csrf_token %}
+        Account Number <input type="number" name="acc" id="">
+        <br><br>
+        Pin <input type="password" name="pin" id=""><br><br>
+        Amount <input type="number" name="amt" id="">
+        <button type="submit">Deposit</button>
+    </form>
+    {% if msg %}
+        <p>{{ msg }}</p>
+    {% endif %}
 </body>
 </html>

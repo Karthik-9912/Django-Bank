@@ -85,4 +85,29 @@ def set_pin(request):
     return render(request,'setPin.html')
 
 def deposit(request):
-    return render(request,'deposit.html')
+    msg=""
+    data=None
+    if request.method=="POST":
+        acc=request.POST.get('acc')
+        pin=request.POST.get('pin')
+        amt=request.POST.get('amt')
+
+        try:
+            data=BankDetails.objects.get(acc_num=acc)
+        except:
+            msg="Account NOt found"
+        if data:
+            epin=encrypt(pin)
+            if data.pin==epin:
+                if int(amt)>=100 and int(amt)<=10000:
+                    data.balance+=int(amt)
+                    data.save()
+                    return redirect("index")
+                else:
+                    msg="You exceeded the aomunt range "
+            else:
+                msg="Incorrect Pin"
+    context={
+        'msg':msg
+    }
+    return render(request,'deposit.html',context)
