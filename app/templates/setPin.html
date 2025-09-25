@@ -7,5 +7,13 @@
 </head>
 <body>
     <h1>SetPin</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        PIN <input type="password" name="pin" id="">
+        <br><br>
+        CONFIRM PIN <input type="password" name="cpin" id="">
+        <br><br>
+        <button type="submit">Generate</button>
+    </form>
 </body>
 </html>

@@ -4,9 +4,16 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import BankDetails
 from random import randint
+import hashlib
+
+
 
 
 # Create your views here.
+
+def encrypt(request):
+    return hashlib.shake_256(str(pin).encode()).hexdigest(length=16)
+
 def index(request):
     return render(request,'index.html')
 
@@ -65,6 +72,17 @@ def validate(request):
     }
     return render(request,'validate.html',context)
 
-def set_pin(request):
-
+def set_pin(request):   
+    if request.method=="POST":
+        pin=request.POST.get('pin')
+        cpin=request.POST.get('cpin')
+        if pin==cpin:
+            session_acc=request.session['acc']
+            data=BankDetails.objects.get(acc_num=session_acc)
+            data.pin=encrypt(pin)
+            data.save()
+            return redirect("index")
     return render(request,'setPin.html')
+
+def deposit(request):
+    return render(request,'deposit.html')
