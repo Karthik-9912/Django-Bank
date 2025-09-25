@@ -111,3 +111,25 @@ def deposit(request):
         'msg':msg
     }
     return render(request,'deposit.html',context)
+
+def balance(request):
+    data=None
+    msg=""
+    if request.method=="POST":
+        acc=request.POST.get('acc')
+        pin=request.POST.get('pin')
+        try:
+            data=BankDetails.objects.get(acc_num=acc)
+        except:
+            msg="Account Not Found"
+        if data:
+            cpin=encrypt(pin)
+            if data.pin == cpin:
+                msg=f"ur balance is {data.balance}"
+            else:
+                msg="Pin INvalid"
+    context={
+        'msg':msg
+    }
+
+    return render(request,'balance.html',context)

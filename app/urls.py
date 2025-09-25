@@ -8,4 +8,5 @@ urlpatterns=[
     path('validate/',views.validate,name='validate'),
     path('set/',views.set_pin,name='set'),
     path('deposit/',views.deposit,name='deposit'),
+    path('balance/',views.balance,name='balance'),
 ]
